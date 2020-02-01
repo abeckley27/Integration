@@ -1,15 +1,27 @@
-#pragma once
-
 #include <cmath>
 #include <functional>
 
-double integrate(double* y, double a, double b, int n) {
+double trapz(double* y, double a, double b, int n) {
 	double output = 0.0;
 	double dx = (b - a) / (n - 1);
 	
 	for (int i = 0; i < n; i++) { output += ((y[i] + y[i + 1]) * dx) / 2.0; }
 	return output;
 }
+
+double simps(double* y, double a, double b, int n) {
+	double output = 0.0;
+	double dx = (b - a) / (n - 1);
+	int i = 0;
+
+	return output;
+}
+
+double trapz_2d(double* y, double a, double b, int n) {
+
+
+}
+
 /*
  double*** create(std::function<double(double, double, double)> f, double* bounds, int num_intervals) {
 	int i, j, k;

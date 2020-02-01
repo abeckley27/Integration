@@ -1,5 +1,3 @@
-#pragma once
-
 #include <cmath>
 #include <functional>
 #include <iostream>
@@ -7,7 +5,7 @@
 #include <random>
 #include <cstdint>
 
-double MCint_1d(std::function<double(double)> f, double a, double b, int64_t n) {
+double MCint_1d(const std::function<double(double)>& f, double a, double b, int64_t n) {
 	std::random_device rd;
 	std::mt19937 gen(rd());
 	std::uniform_real_distribution<> dist(0.0,1.0);
