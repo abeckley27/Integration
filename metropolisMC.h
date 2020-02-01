@@ -19,41 +19,36 @@ double f1(double x, double y) { return x * x * y * y; }
 
 //Integrating functions
 
-double mmc_1d() {	
+double mmc_1d(const std::function<double(double)>& f, int n) {	
 	std::random_device rd;
 	std::mt19937 gen(rd());
 	std::uniform_real_distribution<> acc_dist(0.0,1.0);
 	std::uniform_real_distribution<> sampling_dist(-1.0,1.0);
 	double pi = 3.14159265358979;
 	double result = 0.0;
+	double x = sampling_dist(gen);
+	int i = 0;
+	double tot = 0.0;
+	double acc = 0.0;
+	double step = 2.08;
 
-	for (int p = 2; p<=8; p += 2) {
-
-		double x = sampling_dist(gen);
-		int i = 0;
-		int steps = pow(10,p);
-		double tot = 0.0;
-		double acc = 0.0;
-		double step = 2.08;
-
-		while (i < steps) {
-			double x1 = x + step * sampling_dist(gen);
-			double u0 = g(x);
-			double u1 = g(x1);
-			double acceptance_crit = acc_dist(gen);
-			if ( (u1 / u0) > acceptance_crit ) { 
-				x = x1;
-				acc++;
-			}
-			tot += f1(x);
-			i++;
+	while (i < n) {
+		double x1 = x + step * sampling_dist(gen);
+		double u0 = g(x);
+		double u1 = g(x1);
+		double acceptance_crit = acc_dist(gen);
+		if ( (u1 / u0) > acceptance_crit ) { 
+			x = x1;
+			acc++;
 		}
- 
-		result = sqrt(pi) * tot / steps;
-		std::cout << "The integral is \t" << result << std::endl;
-		std::cout << "Acceptance ratio: \t" << acc / steps << std::endl;
-		std::cout << "Nsteps: \t\t" << steps << std::endl << "---\n";
+		tot += f(x);
+		i++;
 	}
+
+	result = sqrt(pi) * tot / n;
+	//std::cout << "The integral is \t" << result << std::endl;
+	//std::cout << "Acceptance ratio: \t" << acc / n << std::endl;
+	//std::cout << "n: \t\t" << n << std::endl << "---\n";
 	return result;
 }
 
@@ -69,12 +64,12 @@ double mmc_2d() {
 	double y = sampling_dist(gen);
 	int i = 0;
 	int p = 7;
-	int steps = pow(10,p);
+	int n = pow(10,p);
 	double tot = 0.0;
 	double acc = 0.0;
 	double step = 1.0;
 
-	while (i < steps) {
+	while (i < n) {
 		double x1 = x + step * sampling_dist(gen);
 		double y1 = y + step * sampling_dist(gen);
 		double u0 = g(x,y);
@@ -89,9 +84,9 @@ double mmc_2d() {
 		i++;
 	}
  
-	std::cout << "The integral is \t" << pi * tot / steps << std::endl;
-	std::cout << "Acceptance ratio: \t" << acc / steps << std::endl;
-	std::cout << "Nsteps: \t\t" << steps << std::endl << "---\n";
+	std::cout << "The integral is \t" << pi * tot / n << std::endl;
+	std::cout << "Acceptance ratio: \t" << acc / n << std::endl;
+	std::cout << "Nn: \t\t" << n << std::endl << "---\n";
 
 	return 0;
 }
